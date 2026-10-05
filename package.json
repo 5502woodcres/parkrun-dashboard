@@ -1,0 +1,14 @@
+{
+  "name": "parkrun-alphabet-dashboard",
+  "version": "1.0.0",
+  "description": "Parkrun Alphabet Challenge tracker - Lisa vs Beth",
+  "main": "scraper.js",
+  "scripts": {
+    "scrape": "node scraper.js",
+    "serve": "npx http-server . -p 8080",
+    "dev": "npm run scrape && npm run serve"
+  },
+  "keywords": ["parkrun", "alphabet", "challenge"],
+  "author": "Lisa",
+  "license": "MIT"
+}

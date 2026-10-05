@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parkrun Alphabet Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+        header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+        .section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .alphabet-grid {
+            display: grid;
+            grid-template-columns: repeat(13, 1fr);
+            gap: 6px;
+        }
+        .letter-box {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            background: white;
+        }
+        .letter-box.both {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-color: #4caf50;
+        }
+        .letter-box.lisa {
+            background: #e3f2fd;
+            color: #1565c0;
+            border-color: #2196f3;
+        }
+        .letter-box.beth {
+            background: #fff3e0;
+            color: #e65100;
+            border-color: #ff9800;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        button:hover {
+            background: #0052a3;
+        }
+        .courses-table {
+            width: 100%;
+            font-size: 13px;
+            border-collapse: collapse;
+        }
+        .courses-table th {
+            background: #f5f5f5;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .courses-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .tag {
+            display: inline-block;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin: 2px;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            .alphabet-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Parkrun Alphabet Challenge</h1>
+            <p><a href="https://www.parkrun.org.uk/athlete/3934942" target="_blank">Lisa</a> vs <a href="https://www.parkrun.org.uk/athlete/2475659" target="_blank">Beth</a> • Real-time progress tracker</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div>Lisa</div>
+                <div class="stat-value" id="lisa-count">0</div>
+                <div style="font-size: 12px; color: #999;">letters</div>
+            </div>
+            <div class="stat-card">
+                <div>Beth</div>
+                <div class="stat-value" id="beth-count">0</div>
+                <div style="font-size: 12px; color: #999;">letters</div>
+            </div>
+            <div class="stat-card">
+                <div>Together</div>
+                <div class="stat-value" id="combined-count">0</div>
+                <div style="font-size: 12px; color: #999;">unique letters</div>
+            </div>
+            <div class="stat-card">
+                <div>Progress</div>
+                <div class="stat-value" id="progress-percent">0%</div>
+                <div style="font-size: 12px; color: #999;">complete</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="exportCSV()">Export CSV</button>
+            <button onclick="exportJSON()">Export JSON</button>
+            <button onclick="location.reload()">Refresh</button>
+        </div>
+
+        <div class="section">
+            <h2>Alphabet Progress</h2>
+            <div class="alphabet-grid" id="alphabet"></div>
+        </div>
+
+        <div class="two-column">
+            <div class="section">
+                <h2>Lisa's Remaining</h2>
+                <div id="lisa-remaining"></div>
+            </div>
+            <div class="section">
+                <h2>Beth's Remaining</h2>
+                <div id="beth-remaining"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Recent Runs</h2>
+            <table class="courses-table">
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Letter</th>
+                        <th>Athlete</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="history-table"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        let allData = {};
+
+        async function loadData() {
+            try {
+                const response = await fetch('parkrun-data.json');
+                allData = await response.json();
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+            renderDashboard();
+        }
+
+        function renderDashboard() {
+            updateStats();
+            renderAlphabet();
+            renderRemaining();
+            renderHistory();
+        }
+
+        function updateStats() {
+            const lisaLetters = new Set(allData.lisa?.courses?.map(c => c.letter) || []);
+            const bethLetters = new Set(allData.beth?.courses?.map(c => c.letter) || []);
+            const combined = new Set([...lisaLetters, ...bethLetters]);
+
+            document.getElementById('lisa-count').textContent = lisaLetters.size;
+            document.getElementById('beth-count').textContent = bethLetters.size;
+            document.getElementById('combined-count').textContent = combined.size;
+            document.getElementById('progress-percent').textContent = Math.round((combined.size / 26) * 100) + '%';
+        }
+
+        function renderAlphabet() {
+            const lisaLetters = new Set(allData.lisa?.courses?.map(c => c.letter) || []);
+            const bethLetters = new Set(allData.beth?.courses?.map(c => c.letter) || []);
+
+            const grid = document.getElementById('alphabet');
+            grid.innerHTML = '';
+
+            ALPHABET.forEach(letter => {
+                const box = document.createElement('div');
+                box.className = 'letter-box';
+
+                if (lisaLetters.has(letter) && bethLetters.has(letter)) {
+                    box.classList.add('both');
+                } else if (lisaLetters.has(letter)) {
+                    box.classList.add('lisa');
+                } else if (bethLetters.has(letter)) {
+                    box.classList.add('beth');
+                }
+
+                box.textContent = letter;
+                grid.appendChild(box);
+            });
+        }
+
+        function renderRemaining() {
+            const lisaLetters = new Set(allData.lisa?.courses?.map(c => c.letter) || []);
+            const bethLetters = new Set(allData.beth?.courses?.map(c => c.letter) || []);
+
+            const renderTags = (containerId, letters) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                const remaining = ALPHABET.filter(l => !letters.has(l));
+                remaining.forEach(letter => {
+                    const tag = document.createElement('span');
+                    tag.className = 'tag';
+                    tag.textContent = letter;
+                    container.appendChild(tag);
+                });
+            };
+
+            renderTags('lisa-remaining', lisaLetters);
+            renderTags('beth-remaining', bethLetters);
+        }
+
+        function renderHistory() {
+            const history = [];
+            (allData.lisa?.courses || []).forEach(c => history.push({ ...c, athlete: 'Lisa' }));
+            (allData.beth?.courses || []).forEach(c => history.push({ ...c, athlete: 'Beth' }));
+
+            const tbody = document.getElementById('history-table');
+            tbody.innerHTML = '';
+
+            history.slice(0, 20).forEach(h => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${h.name}</td><td>${h.letter}</td><td>${h.athlete}</td><td>${h.date || 'N/A'}</td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        function exportCSV() {
+            let csv = 'Course,Letter,Lisa,Beth\n';
+            ALPHABET.forEach(letter => {
+                const lisa = allData.lisa?.courses?.find(c => c.letter === letter);
+                const beth = allData.beth?.courses?.find(c => c.letter === letter);
+                csv += `"${lisa ? lisa.name : ''}",${letter},"${lisa ? 'YES' : ''}","${beth ? 'YES' : ''}"\n`;
+            });
+            download('alphabet-challenge.csv', csv);
+        }
+
+        function exportJSON() {
+            download('alphabet-challenge.json', JSON.stringify(allData, null, 2));
+        }
+
+        function download(filename, content) {
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        window.addEventListener('load', loadData);
+    </script>
+</body>
+</html>
