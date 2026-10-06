@@ -11,7 +11,7 @@
         "lng": 144.9629,
         "location": "Melbourne, VIC",
         "distances": {
-          "toFlat": 16912.04155693469,
+          "toFlat": 16912.041556934695,
           "toWork": 16903.27954036105
         }
       },
@@ -59,7 +59,7 @@
         "lng": 145.3878,
         "location": "Emerald, VIC",
         "distances": {
-          "toFlat": 16947.10249099785,
+          "toFlat": 16947.102490997855,
           "toWork": 16938.344028636384
         }
       },
@@ -84,7 +84,7 @@
         "location": "Glenroy, VIC",
         "distances": {
           "toFlat": 16903.099155464108,
-          "toWork": 16894.33848746718
+          "toWork": 16894.338487467183
         }
       },
       {
@@ -113,7 +113,7 @@
         "lng": 144.9629,
         "location": "Melbourne, VIC",
         "distances": {
-          "toFlat": 16912.04155693469,
+          "toFlat": 16912.041556934695,
           "toWork": 16903.27954036105
         }
       },
@@ -149,7 +149,7 @@
         "lng": 145.3878,
         "location": "Emerald, VIC",
         "distances": {
-          "toFlat": 16947.10249099785,
+          "toFlat": 16947.102490997855,
           "toWork": 16938.344028636384
         }
       },
