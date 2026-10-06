@@ -1,0 +1,11 @@
+[build]
+  command = "echo 'No build step needed - static site'"
+  publish = "."
+
+[[redirects]]
+  from = "/*"
+  to = "/dashboard.html"
+  status = 200
+
+[context.production]
+  command = "echo 'Production deployment'"
